@@ -1,3 +1,5 @@
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 using BlogWebApp.Data;
 using BlogWebApp.Models;
 using BlogWebApp.Utilities;
@@ -25,6 +27,9 @@ namespace BlogWebApp
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
+            builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
+
+
             var app = builder.Build();
             DataSeeding();
 
@@ -35,10 +40,14 @@ namespace BlogWebApp
                 app.UseHsts();
             }
 
+            app.UseNotyf();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
