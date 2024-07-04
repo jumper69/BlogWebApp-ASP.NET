@@ -6,12 +6,7 @@ using BlogWebApp.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlogWebApp
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -32,6 +27,7 @@ namespace BlogWebApp
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/login";
+               //options.AccessDeniedPath = "/AccessDenied";
             });
 
             var app = builder.Build();
@@ -73,6 +69,3 @@ namespace BlogWebApp
                     DbInitialize.Initialize();
                 }
             }
-        }
-    }
-}

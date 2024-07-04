@@ -1,7 +1,6 @@
 ﻿using BlogWebApp.Data;
 using BlogWebApp.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Reflection;
 
 namespace BlogWebApp.Utilities
 {
@@ -22,8 +21,8 @@ namespace BlogWebApp.Utilities
         {
             if (!_roleManager.RoleExistsAsync(WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult())
             {
-                _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAdmin)).GetAwaiter();
-                _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAuthor)).GetAwaiter();
+                _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAdmin)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAuthor)).GetAwaiter().GetResult();
                 _userManager.CreateAsync(new ApplicationUser()
                 {
                     UserName = "admin@gmail.com",
@@ -32,7 +31,7 @@ namespace BlogWebApp.Utilities
                     LastName = "Admin"
                 },"Admin@0011").Wait();
 
-                var appUser = _context.ApplicationUsers.FirstOrDefault(x => x.Email == "admin@gmail.com");
+                var appUser = _context.ApplicationUsers!.FirstOrDefault(x => x.Email == "admin@gmail.com");
                 if (appUser != null) 
                 {
                     _userManager.AddToRoleAsync(appUser, WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult();
