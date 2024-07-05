@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using BlogWebApp.ViewModels;
 
 namespace BlogWebApp.Areas.Admin.Controllers
 {
@@ -8,6 +10,12 @@ namespace BlogWebApp.Areas.Admin.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View(new CreatePostVM());
         }
     }
 }
