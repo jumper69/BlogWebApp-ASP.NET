@@ -144,14 +144,8 @@ namespace BlogWebApp.Areas.Admin.Controllers
             {
                 return View(new LoginVM());
             }
-            return RedirectToAction("Index", "User", new { area = "Admin" });
+            return RedirectToAction("Index", "Post", new { area = "Admin" });
         }
-
-        //[HttpGet("Login")]
-        //public IActionResult Login(LoginVM vm)
-        //{
-        //    return View(vm);
-        //}
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginVM vm)
@@ -171,7 +165,7 @@ namespace BlogWebApp.Areas.Admin.Controllers
             }
             await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, vm.RememberMe, true);
             _notification.Success("Login Successful");
-            return RedirectToAction("Index", "User", new { area = "Admin" });
+            return RedirectToAction("Index", "Post", new { area = "Admin" });
         }
         [HttpPost]
         [Authorize]
@@ -181,6 +175,14 @@ namespace BlogWebApp.Areas.Admin.Controllers
             _notification.Success("You are logged out successfully");
             return RedirectToAction("Index", "Home", new {area = ""});
         }
+
+        [HttpGet("AccessDenied")]
+        [Authorize]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
 
         //[HttpGet("AccessDenied")]
         //[Authorize]
