@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using BlogWebApp.ViewModels;
 using BlogWebApp.Data;
+using X.PagedList;
 
 namespace BlogWebApp.Controllers
 {
@@ -17,14 +18,16 @@ namespace BlogWebApp.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var vm = new HomeVM();
             var setting = _context.Settings!.ToList();
             vm.Title = setting[0].Title;
             vm.ShortDescription = setting[0].ShortDescription;
             vm.ThumbnailUrl = setting[0].ThumbnailUrl;
-            vm.Posts = _context.Posts!.Include(x => x.ApplicationUser).ToList();
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            vm.Posts = await _context.Posts!.Include(x => x.ApplicationUser).ToPagedListAsync(pageNumber, pageSize);
             return View(vm);
         }
 

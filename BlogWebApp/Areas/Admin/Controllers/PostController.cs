@@ -7,6 +7,7 @@ using BlogWebApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlogWebApp.Utilities;
+using X.PagedList;
 
 namespace BlogWebApp.Areas.Admin.Controllers
 {
@@ -30,7 +31,7 @@ namespace BlogWebApp.Areas.Admin.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var listOfPosts = new List<Post>();
 
@@ -53,7 +54,11 @@ namespace BlogWebApp.Areas.Admin.Controllers
                 ThumbnailUrl = x.ThumbnailUrl,
                 AuthorName = x.ApplicationUser!.FirstName + " " + x.ApplicationUser.LastName
             }).ToList();
-            return View(listOfPostsVM);
+
+            int pageSize = 4;
+            int pageNumber = (page ?? 1);
+
+            return View(await listOfPostsVM.ToPagedListAsync(pageNumber, pageSize));
         }
 
         [HttpGet]
